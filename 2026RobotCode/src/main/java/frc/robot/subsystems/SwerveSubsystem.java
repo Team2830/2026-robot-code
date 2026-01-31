@@ -56,7 +56,7 @@ public class SwerveSubsystem extends SubsystemBase {
   {
     return run(() -> {
 
-      Translation2d scaledInputs = SwerveMath.scaleTranslation(new Translation2d(translationX.getAsDouble(),
+      Translation2d scaledInputs = SwerveMath.scaleTranslation(new Translation2d(-translationX.getAsDouble(),
                                                                                  translationY.getAsDouble()), 1.0);
 
       // Make the robot move
@@ -80,7 +80,7 @@ public class SwerveSubsystem extends SubsystemBase {
   {
     return run(() -> {
       // Make the robot move
-      swerveDrive.drive(new Translation2d(translationX.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
+      swerveDrive.drive(new Translation2d(-translationX.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
                                           translationY.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity()),
                         angularRotationX.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
                         true,
