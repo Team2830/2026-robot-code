@@ -40,7 +40,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftX, m_driverController::getLeftY, m_driverController::getRightX));
+    drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
   }
 
   /**
