@@ -3,14 +3,14 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
+import frc.robot.Constants.MotorConstants;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeMotor extends SubsystemBase {
-  SparkMax motor = new SparkMax(1, MotorType.kBrushless);
+  SparkMax motor = new SparkMax(MotorConstants.intakeMotorID, MotorType.kBrushless);
 
   /** Creates a new IntakeMotor. */
   public IntakeMotor() {}
