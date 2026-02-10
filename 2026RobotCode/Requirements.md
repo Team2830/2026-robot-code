@@ -24,4 +24,5 @@
 * kicker motors off
 * intake motors on
 * kicker motors off
+* indexer motors on
 

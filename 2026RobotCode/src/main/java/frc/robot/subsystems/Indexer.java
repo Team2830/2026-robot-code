@@ -19,9 +19,19 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Indexer extends SubsystemBase {
   private SparkMax motor = new SparkMax(MotorConstants.indexerID, MotorType.kBrushless);
-  
+
+  private static Indexer instance = null;
+
+  public static Indexer getInstance() {
+    if(instance == null) {
+      instance = new Indexer();
+    }
+
+    return instance;
+  }
+
   /** Creates a new Indexer. */
-  public Indexer() {
+  private Indexer() {
   }
   
 

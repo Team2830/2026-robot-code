@@ -23,6 +23,16 @@ import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
 public class SwerveSubsystem extends SubsystemBase {
   private SwerveDrive swerveDrive;
 
+  private static SwerveSubsystem instance = null ;
+
+  public static SwerveSubsystem getInstance() {
+     if(instance == null) {
+        instance = new SwerveSubsystem();
+     }
+
+     return instance;
+  }
+
   /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem() {
     double maximumSpeed = Units.feetToMeters(12.1);

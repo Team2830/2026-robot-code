@@ -27,7 +27,18 @@ public class IntakePivot extends SubsystemBase {
     private double topAngle = 86.365;
 private double angleMotorRatio=20.3;//TODO:made this num up
   /** Creates a new IntakePivot. */
-  public IntakePivot() {
+
+
+  private static IntakePivot instance = null;
+
+  public static IntakePivot getInstance() {
+     if(instance == null) {
+       instance = new IntakePivot();
+     }
+
+     return instance;
+  }
+  private IntakePivot() {
      kP = 5e-5; 
     kI = 1e-6;
     kD = 0; 

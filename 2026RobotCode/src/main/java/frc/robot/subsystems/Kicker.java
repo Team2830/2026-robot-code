@@ -20,6 +20,18 @@ import frc.robot.Constants.MotorConstants;
 
 public class Kicker extends SubsystemBase {
   private SparkMax motor = new SparkMax(MotorConstants.kickerID, MotorType.kBrushless);
+
+  private static Kicker instance = null;
+
+  public static Kicker getInstance() {
+     if(instance == null) {
+        instance = new Kicker(); 
+     }
+
+     return instance;
+  }
+
+
   
   /** Creates a new Indexer. */
   public Kicker() {

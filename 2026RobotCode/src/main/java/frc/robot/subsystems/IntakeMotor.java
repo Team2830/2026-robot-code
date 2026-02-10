@@ -10,10 +10,20 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeMotor extends SubsystemBase {
-  SparkMax motor = new SparkMax(MotorConstants.intakeMotorID, MotorType.kBrushless);
+  private SparkMax motor = new SparkMax(MotorConstants.intakeMotorID, MotorType.kBrushless);
+  private static IntakeMotor instance = null;
 
+  public static IntakeMotor getInstance() {
+    if(instance == null) {
+      instance = new IntakeMotor();
+    }
+     return instance;
+
+  }
+
+  
   /** Creates a new IntakeMotor. */
-  public IntakeMotor() {}
+  private IntakeMotor() {}
 
   @Override
   public void periodic() {

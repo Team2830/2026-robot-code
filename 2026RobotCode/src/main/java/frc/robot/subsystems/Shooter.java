@@ -19,6 +19,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
   private SparkMax motor = new SparkMax(MotorConstants.shooterID, MotorType.kBrushless);
+
+   private static Shooter instance = null;
+
+   public static Shooter getInstance() {
+      if(instance == null) {
+         instance = new Shooter();
+      }
+
+      return instance;
+   }
   
   /** Creates a new Shooter. */
   public Shooter() {
