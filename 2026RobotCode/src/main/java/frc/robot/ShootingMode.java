@@ -12,9 +12,9 @@ import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class InTheTrenches extends Command {
+public class ShootingMode extends Command {
   /** Creates a new InTheTrenches. */
-  public InTheTrenches() {
+  public ShootingMode() {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Indexer.getInstance(),
     IntakeMotor.getInstance(),
@@ -33,10 +33,11 @@ public class InTheTrenches extends Command {
   @Override
   public void execute() {
     Indexer.getInstance().intake();
-    IntakeMotor.getInstance().in();
+    IntakeMotor.getInstance().stop();
     IntakePivot.getInstance().down();
-    Shooter.getInstance().stop();
-    Kicker.getInstance().stop();
+    Shooter.getInstance().shoot(1.0);
+    Kicker.getInstance().intake();
+    
     
   }
 

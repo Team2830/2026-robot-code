@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   SwerveSubsystem drive = new SwerveSubsystem();
+  
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
@@ -41,7 +42,36 @@ public class RobotContainer {
    */
   private void configureBindings() {
     drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
+    
+  m_driverController.a().whileTrue(new Intaking());
+  m_driverController.b().whileTrue(new InTheTrenches());
+  m_driverController.y().whileTrue(new DefensiveMode());
+  m_driverController.x().whileTrue(new ShootingMode());
+
+  m_driverController.leftBumper().whileTrue(new AbsoluteDriveAdv(
+    drive,
+    () -> m_driverController.getLeftY(),
+    () -> m_driverController.getLeftX(),
+    () -> 0.0, 
+    () -> true,
+    () -> false,
+    () -> false,
+    () -> false
+  ));
+  
+   m_driverController.rightBumper().whileTrue(new AbsoluteDriveAdv(
+    drive,
+   () -> m_driverController.getLeftY(),
+   () -> m_driverController.getLeftX(),
+   () ->0.0, 
+   () ->false,
+   () -> true,
+   () -> false,
+   () -> false
+  ));
+
   }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

@@ -9,27 +9,42 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeMotor;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.Kicker;
+import frc.robot.subsystems.Shooter;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class DefensiveMode extends Command {
   /** Creates a new InTheTrenches. */
   public DefensiveMode() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Indexer.getInstance());
-    addRequirements(IntakeMotor.getInstance());
-    addRequirements(IntakePivot.getInstance());
-    addRequirements(Kicker.getInstance());
+    addRequirements(Indexer.getInstance(),
+     IntakeMotor.getInstance(), 
+     Shooter.getInstance(),
+     IntakePivot.getInstance(),
+     Kicker.getInstance()
+     
+     );
+    
 
   }
 
+
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Indexer.getInstance().stop();
+    Kicker.getInstance().stop();
+    Shooter.getInstance().stop();
+    IntakeMotor.getInstance().stop();
+    
+
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Indexer.getInstance().stop();
+    IntakePivot.getInstance().up();
+    
+    
   }
 
   // Called once the command ends or is interrupted.

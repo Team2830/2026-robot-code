@@ -25,6 +25,7 @@ public class IntakePivot extends SubsystemBase {
 
     private double bottomAngle = 13.616;
     private double topAngle = 86.365;
+    private double middleAngle = 62.175;
 private double angleMotorRatio=20.3;//TODO:made this num up
   /** Creates a new IntakePivot. */
 
@@ -65,7 +66,7 @@ config.closedLoop
 
   public void up () {
     // Set the setpoint of the PID controller in raw position mode
-    m_controller.setSetpoint(topAngle*angleMotorRatio/360.0, ControlType.kPosition);
+    m_controller.setSetpoint(middleAngle*angleMotorRatio/360.0, ControlType.kPosition);
   }
 public void down () {
     // Set the setpoint of the PID controller in raw position mode

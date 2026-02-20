@@ -9,13 +9,19 @@ import java.io.File;
 import java.io.IOException;
 import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import swervelib.SwerveDrive;
+import swervelib.math.Matter;
 import swervelib.math.SwerveMath;
+import swervelib.parser.SwerveDriveConfiguration;
 import swervelib.parser.SwerveParser;
 import swervelib.telemetry.SwerveDriveTelemetry;
 import swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity;
@@ -24,7 +30,11 @@ public class SwerveSubsystem extends SubsystemBase {
   private SwerveDrive swerveDrive;
 
   private static SwerveSubsystem instance = null ;
-
+  private double maximumSpeed;
+  public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag
+  public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
+  public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
+  public static final double TURN_CONSTANT    = 6;
   public static SwerveSubsystem getInstance() {
      if(instance == null) {
         instance = new SwerveSubsystem();
@@ -35,7 +45,7 @@ public class SwerveSubsystem extends SubsystemBase {
 
   /** Creates a new SwerveSubsystem. */
   public SwerveSubsystem() {
-    double maximumSpeed = Units.feetToMeters(12.1);
+    maximumSpeed = Units.feetToMeters(12.1);
     File swerveJsonDirectory = new File(Filesystem.getDeployDirectory(),"swerve");
 
     try {
@@ -53,6 +63,43 @@ public class SwerveSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  public SwerveDriveConfiguration getSwerveDriveConfiguration()
+  {
+    return swerveDrive.swerveDriveConfiguration;
+  }
+
+  public void drive(Translation2d translation, double rotation, boolean fieldRelative)
+  {
+    swerveDrive.drive(translation,
+                      rotation,
+                      fieldRelative,
+                      false); // Open loop is disabled since it shouldn't be used most of the time.
+  }
+
+  public Pose2d getPose()
+  {
+    return swerveDrive.getPose();
+  }
+
+  public Rotation2d getHeading()
+  {
+    return getPose().getRotation();
+  }
+  public ChassisSpeeds getTargetSpeeds(double xInput, double yInput, double headingX, double headingY)
+  {
+    Translation2d scaledInputs = SwerveMath.cubeTranslation(new Translation2d(xInput, yInput));
+    return swerveDrive.swerveController.getTargetSpeeds(scaledInputs.getX(),
+                                                        scaledInputs.getY(),
+                                                        headingX,
+                                                        headingY,
+                                                        getHeading().getRadians(),
+                                                        maximumSpeed);
+  }
+
+    public ChassisSpeeds getFieldVelocity()
+  {
+    return swerveDrive.getFieldVelocity();
+  }
     /**
    * Command to drive the robot using translative values and heading as a setpoint.
    *

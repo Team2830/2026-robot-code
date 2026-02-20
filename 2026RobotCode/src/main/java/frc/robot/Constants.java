@@ -20,8 +20,10 @@ public final class Constants {
   public static class MotorConstants {
    public static final int indexerID = 14;
   public static final int kickerID= 15;
-  public static final int shooterID=16;
-  public static final int intakePivotID= 17;
-   public static final int intakeMotorID= 18; 
+  public static final int leftShooterID=17;
+  public static final int centerShooterID=16;
+  public static final int rightShooterID=18;
+  public static final int intakePivotID= 19;
+   public static final int intakeMotorID= 20; 
   }
 }

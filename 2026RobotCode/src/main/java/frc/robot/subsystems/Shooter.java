@@ -18,7 +18,10 @@ import com.revrobotics.spark.SparkBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
-  private SparkMax motor = new SparkMax(MotorConstants.shooterID, MotorType.kBrushless);
+  private SparkMax motorLeft = new SparkMax(MotorConstants.leftShooterID, MotorType.kBrushless);
+  private SparkMax motorCenter = new SparkMax(MotorConstants.centerShooterID, MotorType.kBrushless);
+  private SparkMax motorRight = new SparkMax(MotorConstants.rightShooterID, MotorType.kBrushless);
+
 
    private static Shooter instance = null;
 
@@ -40,8 +43,18 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void shoot (double speed) {
-  motor.set(speed);  
+  public void shoot(double speed) {
+  motorLeft.set(speed);
+  motorCenter.set(speed);
+  motorRight.set(speed);
+    
+  }
+
+  public void stop() {
+  motorLeft.stopMotor();
+  motorCenter.stopMotor();
+  motorRight.stopMotor();
+  
   }
 
 }
