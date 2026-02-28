@@ -5,8 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.SwerveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -25,6 +28,9 @@ public class RobotContainer {
   private final CommandXboxController m_driverController =
       new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
+    private final CommandXboxController m_opController =
+      new CommandXboxController(OperatorConstants.kOpControllerPort);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -42,12 +48,15 @@ public class RobotContainer {
    */
   private void configureBindings() {
     drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
+    //CommandScheduler.getInstance().setDefaultCommand(Kicker.getInstance(), Commands.run( () -> Kicker.getInstance().outake()));
     
-  m_driverController.a().whileTrue(new Intaking());
-  m_driverController.b().whileTrue(new InTheTrenches());
-  m_driverController.y().whileTrue(new DefensiveMode());
-  m_driverController.x().whileTrue(new ShootingMode());
+    m_opController.a().whileTrue(new Intaking());
+    //m_opController.b().whileTrue(new InTheTrenches());
+    //m_opController.y().whileTrue(new DefensiveMode());
+    m_opController.x().whileTrue(new ShootingMode());
+    m_opController.leftBumper().whileTrue( new ShootSimple());
 
+  /*
   m_driverController.leftBumper().whileTrue(new AbsoluteDriveAdv(
     drive,
     () -> m_driverController.getLeftY(),
@@ -69,7 +78,7 @@ public class RobotContainer {
    () -> false,
    () -> false
   ));
-
+*/
   }
 
 

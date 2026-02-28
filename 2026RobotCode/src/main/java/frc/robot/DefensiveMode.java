@@ -32,7 +32,7 @@ public class DefensiveMode extends Command {
   @Override
   public void initialize() {
     Indexer.getInstance().stop();
-    Kicker.getInstance().stop();
+    //Kicker.getInstance().stop();
     Shooter.getInstance().stop();
     IntakeMotor.getInstance().stop();
     

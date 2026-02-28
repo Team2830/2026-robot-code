@@ -18,6 +18,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 import swervelib.SwerveDrive;
 import swervelib.math.Matter;
 import swervelib.math.SwerveMath;
@@ -35,6 +36,7 @@ public class SwerveSubsystem extends SubsystemBase {
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double TURN_CONSTANT    = 6;
+  private       Vision      vision;
   public static SwerveSubsystem getInstance() {
      if(instance == null) {
         instance = new SwerveSubsystem();
@@ -54,13 +56,27 @@ public class SwerveSubsystem extends SubsystemBase {
       System.out.println("Error creating swerve drive.");
       e.printStackTrace();
     }
+    if (Constants.useVision){
+       setupPhotonVision();
+      // Stop the odometry thread if we are using vision that way we can synchronize updates better.
+      swerveDrive.stopOdometryThread();
+    }
 
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
   }
-
+ public void setupPhotonVision()
+  {
+    vision = new Vision(swerveDrive::getPose, swerveDrive.field);
+  }
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+     // When vision is enabled we must manually update odometry in SwerveDrive
+    if (Constants.useVision)
+    {
+      swerveDrive.updateOdometry();
+      vision.updatePoseEstimation(swerveDrive);
+    }
   }
 
   public SwerveDriveConfiguration getSwerveDriveConfiguration()
@@ -138,8 +154,8 @@ public class SwerveSubsystem extends SubsystemBase {
   {
     return run(() -> {
       // Make the robot move
-      swerveDrive.drive(new Translation2d(-translationX.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
-                                          translationY.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity()),
+      swerveDrive.drive(new Translation2d(translationX.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
+                                          -translationY.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity()),
                         angularRotationX.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
                         true,
                         false);

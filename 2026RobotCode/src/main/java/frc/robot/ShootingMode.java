@@ -18,7 +18,7 @@ public class ShootingMode extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Indexer.getInstance(),
     IntakeMotor.getInstance(),
-    Shooter.getInstance(),
+    
     IntakePivot.getInstance(),
     Kicker.getInstance()
     );
@@ -27,23 +27,29 @@ public class ShootingMode extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    Indexer.getInstance().intake();
+    IntakeMotor.getInstance().stop();
+    //IntakePivot.getInstance().down();
+    //Shooter.getInstance().shoot(1.0);
+    Kicker.getInstance().intake();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Indexer.getInstance().intake();
-    IntakeMotor.getInstance().stop();
-    IntakePivot.getInstance().down();
-    Shooter.getInstance().shoot(1.0);
-    Kicker.getInstance().intake();
+    
     
     
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    Indexer.getInstance().stop();
+    IntakeMotor.getInstance().stop();
+    Kicker.getInstance().stop();
+  }
 
   // Returns true when the command should end.
   @Override

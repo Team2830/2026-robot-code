@@ -41,10 +41,10 @@ public class Indexer extends SubsystemBase {
   }
 
   public void intake () {
-  motor.set(-1);  
+  motor.set(1);  
   }
 public void outake() {
- motor.set(1);   
+ motor.set(-1);   
   }
 public void stop() {
   motor.set(0);

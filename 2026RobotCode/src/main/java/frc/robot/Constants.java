@@ -15,8 +15,9 @@ package frc.robot;
 public final class Constants {
   public static class OperatorConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kOpControllerPort = 1;
   }
-
+  public static final boolean useVision=false;
   public static class MotorConstants {
    public static final int indexerID = 14;
   public static final int kickerID= 15;
@@ -25,5 +26,6 @@ public final class Constants {
   public static final int rightShooterID=18;
   public static final int intakePivotID= 19;
    public static final int intakeMotorID= 20; 
+  
   }
 }
