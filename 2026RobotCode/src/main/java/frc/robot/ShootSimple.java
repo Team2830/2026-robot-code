@@ -27,7 +27,7 @@ public class ShootSimple extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Shooter.getInstance().shoot(1.0);
+    Shooter.getInstance().shoot(0.8);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

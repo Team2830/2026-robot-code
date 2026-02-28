@@ -7,6 +7,8 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.SwerveSubsystem;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -47,6 +49,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    
+
     drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
     //CommandScheduler.getInstance().setDefaultCommand(Kicker.getInstance(), Commands.run( () -> Kicker.getInstance().outake()));
     
@@ -56,6 +60,8 @@ public class RobotContainer {
     m_opController.x().whileTrue(new ShootingMode());
     m_opController.leftBumper().whileTrue( new ShootSimple());
     m_opController.rightBumper().whileTrue(new Outake());
+
+    m_driverController.leftBumper().onTrue(Commands.runOnce(() -> drive.resetPose()));
   /*
   m_driverController.leftBumper().whileTrue(new AbsoluteDriveAdv(
     drive,

@@ -63,6 +63,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     SwerveDriveTelemetry.verbosity = TelemetryVerbosity.HIGH;
+    swerveDrive.resetOdometry(Pose2d.kZero);
   }
  public void setupPhotonVision()
   {
@@ -90,6 +91,11 @@ public class SwerveSubsystem extends SubsystemBase {
                       rotation,
                       fieldRelative,
                       false); // Open loop is disabled since it shouldn't be used most of the time.
+  }
+
+  public void resetPose() {
+    swerveDrive.resetOdometry(Pose2d.kZero);
+    return;
   }
 
   public Pose2d getPose()
