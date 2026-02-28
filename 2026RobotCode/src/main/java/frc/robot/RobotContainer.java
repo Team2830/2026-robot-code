@@ -55,7 +55,7 @@ public class RobotContainer {
     //m_opController.y().whileTrue(new DefensiveMode());
     m_opController.x().whileTrue(new ShootingMode());
     m_opController.leftBumper().whileTrue( new ShootSimple());
-
+    m_opController.rightBumper().whileTrue(new Outake());
   /*
   m_driverController.leftBumper().whileTrue(new AbsoluteDriveAdv(
     drive,
