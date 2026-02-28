@@ -163,7 +163,7 @@ public class SwerveSubsystem extends SubsystemBase {
       swerveDrive.drive(new Translation2d(translationX.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
                                           -translationY.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity()),
                         angularRotationX.getAsDouble() * swerveDrive.getMaximumChassisAngularVelocity(),
-                        true,
+                        false,
                         false);
     });
   }
