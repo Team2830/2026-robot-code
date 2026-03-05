@@ -54,12 +54,12 @@ public class RobotContainer {
     drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
     //CommandScheduler.getInstance().setDefaultCommand(Kicker.getInstance(), Commands.run( () -> Kicker.getInstance().outake()));
     
-    m_opController.a().whileTrue(new Intaking());
-    //m_opController.b().whileTrue(new InTheTrenches());
-    //m_opController.y().whileTrue(new DefensiveMode());
-    m_opController.x().whileTrue(new ShootingMode());
-    m_opController.leftBumper().whileTrue( new ShootSimple());
-    m_opController.rightBumper().whileTrue(new Outake());
+    m_opController.a().whileTrue(new Intaking());//Operator
+    m_opController.b().onTrue(new InTheTrenches());//Operator-When true 
+    m_opController.y().onTrue(new DefensiveMode());//Operator-When True
+    m_driverController.x().whileTrue(new ShootingMode());//Driver
+    m_driverController.leftBumper().whileTrue( new ShootSimple());//Driver
+    m_driverController.rightBumper().whileTrue(new Outake());//Driver
 
     m_driverController.leftBumper().onTrue(Commands.runOnce(() -> drive.resetPose()));
   /*
