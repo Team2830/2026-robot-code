@@ -35,7 +35,7 @@ public class InTheTrenches extends Command {
     Indexer.getInstance().intake();
     IntakeMotor.getInstance().in();
     //IntakePivot.getInstance().down();
-    Shooter.getInstance().stop();
+    // Shooter.getInstance().stop();
     //Kicker.getInstance().stop();
     
   }

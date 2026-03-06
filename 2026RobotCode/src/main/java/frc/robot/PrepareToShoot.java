@@ -12,15 +12,14 @@ import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ShootingMode extends Command {
+public class PrepareToShoot extends Command {
   /** Creates a new InTheTrenches. */
-  public ShootingMode() {
+  public PrepareToShoot() {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(Indexer.getInstance(),
-    IntakeMotor.getInstance(),
+    addRequirements(
+   
+    Shooter.getInstance()
     
-    IntakePivot.getInstance(),
-    Kicker.getInstance()
     );
     
   }
@@ -28,11 +27,8 @@ public class ShootingMode extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Indexer.getInstance().intake();
-    IntakeMotor.getInstance().stop();
-    //IntakePivot.getInstance().down();
-    //Shooter.getInstance().shoot(1.0);
-    Kicker.getInstance().intake();
+    Shooter.getInstance().shootComplex(600);
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,14 +37,13 @@ public class ShootingMode extends Command {
     
     
     
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Indexer.getInstance().stop();
-    IntakeMotor.getInstance().stop();
-    Kicker.getInstance().stop();
+    Shooter.getInstance().stop();
   }
 
   // Returns true when the command should end.

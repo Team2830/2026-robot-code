@@ -51,16 +51,19 @@ public class RobotContainer {
   private void configureBindings() {
     
 
-    drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
-    //CommandScheduler.getInstance().setDefaultCommand(Kicker.getInstance(), Commands.run( () -> Kicker.getInstance().outake()));
+    
     
     m_opController.a().whileTrue(new Intaking());//Operator
     m_opController.b().onTrue(new InTheTrenches());//Operator-When true 
-    m_opController.y().onTrue(new DefensiveMode());//Operator-When True
-    m_driverController.x().whileTrue(new ShootingMode());//Driver
-    m_driverController.leftBumper().whileTrue( new ShootSimple());//Driver
-    m_driverController.rightBumper().whileTrue(new Outake());//Driver
+    m_opController.y().onTrue(new DefensiveMode());//Operator-When True---- Operator right trigger on true
+    m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot());//Driver
 
+
+    drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
+    //CommandScheduler.getInstance().setDefaultCommand(Kicker.getInstance(), Commands.run( () -> Kicker.getInstance().outake()));
+    
+    m_driverController.rightBumper().whileTrue(new Shooting());//Driver
+    m_driverController.rightBumper().whileTrue(new Outake());//Driver
     m_driverController.leftBumper().onTrue(Commands.runOnce(() -> drive.resetPose()));
   /*
   m_driverController.leftBumper().whileTrue(new AbsoluteDriveAdv(

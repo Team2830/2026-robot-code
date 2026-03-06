@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 import frc.robot.Constants.MotorConstants;
+
+import static edu.wpi.first.units.Units.RPM;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -21,6 +24,10 @@ public class Shooter extends SubsystemBase {
   private SparkMax motorLeft = new SparkMax(MotorConstants.leftShooterID, MotorType.kBrushless);
   private SparkMax motorCenter = new SparkMax(MotorConstants.centerShooterID, MotorType.kBrushless);
   private SparkMax motorRight = new SparkMax(MotorConstants.rightShooterID, MotorType.kBrushless);
+    private SparkClosedLoopController m_controllerLeft;
+    private SparkClosedLoopController m_controllerCenter;
+    private SparkClosedLoopController m_controllerRight;
+  public double kP, kI, kD;
 
 
    private static Shooter instance = null;
@@ -34,7 +41,52 @@ public class Shooter extends SubsystemBase {
    }
   
   /** Creates a new Shooter. */
-  public Shooter() {
+  private Shooter() 
+  {
+    kP = 5e-5; 
+    kI = 1e-6;
+    kD = 0; 
+
+    SparkMaxConfig configLeft = new SparkMaxConfig();
+    configLeft
+    .inverted(true)
+    .idleMode(IdleMode.kBrake);
+configLeft.absoluteEncoder
+    .positionConversionFactor(1)
+    .velocityConversionFactor(1).inverted(false);
+configLeft.closedLoop
+    .pid(kP,kI,kD).positionWrappingEnabled(true).positionWrappingInputRange(0, 1);
+    motorLeft.configure(configLeft,SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    
+    m_controllerLeft= motorLeft.getClosedLoopController();
+
+   SparkMaxConfig configCenter = new SparkMaxConfig();
+    configCenter
+    .inverted(true)
+    .idleMode(IdleMode.kBrake);
+configCenter.absoluteEncoder
+    .positionConversionFactor(1)
+    .velocityConversionFactor(1).inverted(false);
+configCenter.closedLoop
+    .pid(kP,kI,kD).positionWrappingEnabled(true).positionWrappingInputRange(0, 1);
+    motorCenter.configure(configCenter,SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    
+    m_controllerCenter= motorCenter.getClosedLoopController();
+
+    SparkMaxConfig configRight = new SparkMaxConfig();
+    configRight
+    .inverted(true)
+    .idleMode(IdleMode.kBrake);
+configRight.absoluteEncoder
+    .positionConversionFactor(1)
+    .velocityConversionFactor(1).inverted(false);
+configRight.closedLoop
+    .pid(kP,kI,kD).positionWrappingEnabled(true).positionWrappingInputRange(0, 1);
+    motorRight.configure(configCenter,SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    
+    m_controllerRight= motorRight.getClosedLoopController();
+
+
   }
   
 
@@ -43,17 +95,25 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void shoot(double speed) {
+  public void shootSimple(double speed) {
   motorLeft.set(-speed);
   motorCenter.set(-speed);
   motorRight.set(-speed);
     
   }
-
+public void shootComplex(double rpm) {
+  m_controllerLeft.setSetpoint(rpm, ControlType.kVelocity);
+   m_controllerCenter.setSetpoint(rpm, ControlType.kVelocity);
+    m_controllerRight.setSetpoint(rpm, ControlType.kVelocity);
+}
   public void stop() {
-  motorLeft.stopMotor();
-  motorCenter.stopMotor();
-  motorRight.stopMotor();
+  // motorLeft.stopMotor();
+  // motorCenter.stopMotor();
+  // motorRight.stopMotor();
+
+  m_controllerLeft.setSetpoint(0,ControlType.kVelocity);
+  m_controllerCenter.setSetpoint(0,ControlType.kVelocity);
+  m_controllerRight.setSetpoint(0,ControlType.kVelocity);
   
   }
 
