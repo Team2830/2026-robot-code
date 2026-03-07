@@ -55,6 +55,9 @@ public class RobotContainer {
     // Spin Shooter Motor -> Press left trigger once to turn on. Press again to turn off
     m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot());
 
+    m_opController.povUp().toggleOnTrue(new RaiseHood());
+
+    m_opController.povDown().toggleOnTrue(new LowerHood());
 
     /* Driver Controller Mapping */
     // Default Drive Mode is Field Oriented

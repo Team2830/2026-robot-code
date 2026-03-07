@@ -44,7 +44,7 @@ public class Shooter extends SubsystemBase {
   private Shooter() 
   {
     kP = 5e-5; 
-    kI = 1e-6;
+    kI = 4e-6;
     kD = 0; 
 
     SparkMaxConfig configLeft = new SparkMaxConfig();
