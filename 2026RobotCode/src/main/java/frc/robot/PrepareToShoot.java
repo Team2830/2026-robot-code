@@ -29,16 +29,12 @@ public class PrepareToShoot extends Command {
   @Override
   public void initialize() {
     Shooter.getInstance().shootComplex(6000);
-    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
      SmartDashboard.putNumber("rpm",Shooter.getInstance().getRPM());
-    
-    
-    
   }
 
   // Called once the command ends or is interrupted.

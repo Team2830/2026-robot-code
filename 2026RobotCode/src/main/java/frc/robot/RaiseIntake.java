@@ -10,23 +10,17 @@ import frc.robot.subsystems.IntakeMotor;
 import frc.robot.subsystems.IntakePivot;
 import frc.robot.subsystems.Kicker;
 
-public class DefensiveMode extends Command {
-  public DefensiveMode() {
+public class RaiseIntake extends Command {
+  public RaiseIntake() {
     addRequirements(
-        Indexer.getInstance(),
-        IntakeMotor.getInstance(),
-        IntakePivot.getInstance(),
-        Kicker.getInstance()
+        IntakePivot.getInstance()  
     );
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Indexer.getInstance().stop();
-    Kicker.getInstance().stop();
-    IntakeMotor.getInstance().stop();
-    IntakePivot.getInstance().upSlow();
+    IntakePivot.getInstance().upFast();
   }
 
   @Override
@@ -35,12 +29,11 @@ public class DefensiveMode extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    IntakePivot.getInstance().down();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

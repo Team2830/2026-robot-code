@@ -13,75 +13,67 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-/**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
- * subsystems, commands, and trigger mappings) should be declared here.
- */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
   SwerveSubsystem drive = new SwerveSubsystem();
   
-
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController m_driverController =
-      new CommandXboxController(OperatorConstants.kDriverControllerPort);
+    new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
-    private final CommandXboxController m_opController =
-      new CommandXboxController(OperatorConstants.kOpControllerPort);
+  private final CommandXboxController m_opController =
+    new CommandXboxController(OperatorConstants.kOpControllerPort);
 
-  SwerveInputStream driveAngularVelocity_test = SwerveInputStream.of(drive.getSwerveDrive(),
-                                                                () -> m_driverController.getLeftY() * -1,
-                                                                () -> m_driverController.getLeftX() * -1)
-                                                            .withControllerRotationAxis(() -> m_driverController.getRightX()*-1)
-                                                            .deadband(0.1)
-                                                            .scaleTranslation(0.8)
-                                                            .allianceRelativeControl(true);
+  SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
+    drive.getSwerveDrive(),
+    () -> m_driverController.getLeftY() * -1,
+    () -> m_driverController.getLeftX() * -1)
+    .withControllerRotationAxis(() -> m_driverController.getRightX()*-1)
+    .deadband(0.1)
+    .scaleTranslation(0.8)
+    .allianceRelativeControl(true);
 
-  /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // Configure the trigger bindings
     configureBindings();
   }
 
-  /**
-   * Use this method to define your trigger->command mappings. Triggers can be created via the
-   * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary
-   * predicate, or via the named factories in {@link
-   * edu.wpi.first.wpilibj2.command.button.CommandGenericHID}'s subclasses for {@link
-   * CommandXboxController Xbox}/{@link edu.wpi.first.wpilibj2.command.button.CommandPS4Controller
-   * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
-   * joysticks}.
-   */
   private void configureBindings() {
-    
+    /* Operator Controller Mapping */
+    // Intake Balls/"Fuel" -> Press and hold A.
+    m_opController.a().whileTrue(new Intaking());
 
-    
-    
-    m_opController.a().whileTrue(new Intaking());//Operator
-    m_opController.b().onTrue(new InTheTrenches());//Operator-When true 
-    m_opController.y().onTrue(new DefensiveMode());//Operator-When True---- Operator right trigger on true
-    m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot());//Driver
+    // Lower Intake -> Press and hold b
+    //    Note: Use when you are going under the trench
+    m_opController.b().whileTrue(new InTheTrenches());
+
+    // Raise Intake & Stop All Intaking/Indexing/Shooting Motors -> Press and hold y
+    //    Note: Use when defending
+    m_opController.y().toggleOnTrue(new RaiseIntake().andThen(new WaitCommand(0.5)).andThen(new DefensiveMode()));
+
+    // Spin Shooter Motor -> Press left trigger once to turn on. Press again to turn off
+    m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot());
 
 
-    Command driveFieldOrientedAnglularVelocity = drive.driveFieldOriented(driveAngularVelocity_test);
-      drive.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-    //drive.setDefaultCommand(drive.conorsDriveFieldOriented(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightY, m_driverController::getRightX));
-   // drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
-    //CommandScheduler.getInstance().setDefaultCommand(Kicker.getInstance(), Commands.run( () -> Kicker.getInstance().outake()));
+    /* Driver Controller Mapping */
+    // Default Drive Mode is Field Oriented
+    Command driveFieldOrientedAnglularVelocity = drive.driveFieldOriented(driveAngularVelocity);
+    drive.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     
-    m_driverController.rightBumper().whileTrue(new Shooting());//Driver
-    m_driverController.rightTrigger().whileTrue(new Outake());//Driver
-    m_driverController.leftBumper().onTrue(Commands.runOnce(() -> drive.resetPose()));
+    // Shoot the Balls/"Fuel" -> Press and holy right bumper "RB"
+    m_driverController.rightBumper().whileTrue(new Shooting());
+
+    // Outake Balls/"Fuel" -> Press and hold right trigger "RT"
+    m_driverController.rightTrigger().whileTrue(new Outake());
+
+    // Reset Field Orientation -> Press start button
+    m_driverController.start().onTrue(Commands.runOnce(() -> drive.resetPose()));
   /*
   m_driverController.leftBumper().whileTrue(new AbsoluteDriveAdv(
     drive,
     () -> m_driverController.getLeftY(),
-    () -> m_driverController.getLeftX(),
+    () -> m_driverController.getLeftX),
     () -> 0.0, 
     () -> true,
     () -> false,
