@@ -40,15 +40,15 @@ public class IntakePivot extends SubsystemBase {
   }
 
   public void upFast() {
-    motor.set(-0.7);
+    //motor.set(-0.7);
   }
 
   public void upSlow() {
-    motor.set(-0.25);
+    //motor.set(-0.25);
   }
 
   public void down() {
-    motor.set(0.10);
+    //motor.set(0.10);
   }
 
 }
