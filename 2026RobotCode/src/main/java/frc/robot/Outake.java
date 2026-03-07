@@ -32,7 +32,7 @@ public class Outake extends Command {
     IntakeMotor.getInstance().out();
     //IntakePivot.getInstance().down();
     Shooter.getInstance().stop();
-    //Kicker.getInstance().stop();
+    Kicker.getInstance().outake();
     
   }
 
@@ -47,6 +47,7 @@ public class Outake extends Command {
   public void end(boolean interrupted) {
     IntakeMotor.getInstance().stop();
     Indexer.getInstance().stop();
+    Kicker.getInstance().stop();
   }
 
   // Returns true when the command should end.

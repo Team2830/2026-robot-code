@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeMotor;
@@ -27,14 +28,14 @@ public class PrepareToShoot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Shooter.getInstance().shootComplex(600);
+    Shooter.getInstance().shootComplex(6000);
     
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+     SmartDashboard.putNumber("rpm",Shooter.getInstance().getRPM());
     
     
     

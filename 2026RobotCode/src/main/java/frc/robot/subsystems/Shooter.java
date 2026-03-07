@@ -49,7 +49,7 @@ public class Shooter extends SubsystemBase {
 
     SparkMaxConfig configLeft = new SparkMaxConfig();
     configLeft
-    .inverted(true)
+    .inverted(false)
     .idleMode(IdleMode.kBrake);
 configLeft.absoluteEncoder
     .positionConversionFactor(1)
@@ -62,7 +62,7 @@ configLeft.closedLoop
 
    SparkMaxConfig configCenter = new SparkMaxConfig();
     configCenter
-    .inverted(true)
+    .inverted(false)
     .idleMode(IdleMode.kBrake);
 configCenter.absoluteEncoder
     .positionConversionFactor(1)
@@ -75,7 +75,7 @@ configCenter.closedLoop
 
     SparkMaxConfig configRight = new SparkMaxConfig();
     configRight
-    .inverted(true)
+    .inverted(false)
     .idleMode(IdleMode.kBrake);
 configRight.absoluteEncoder
     .positionConversionFactor(1)
@@ -102,19 +102,24 @@ configRight.closedLoop
     
   }
 public void shootComplex(double rpm) {
-  m_controllerLeft.setSetpoint(rpm, ControlType.kVelocity);
-   m_controllerCenter.setSetpoint(rpm, ControlType.kVelocity);
+  m_controllerLeft.setSetpoint(-rpm, ControlType.kVelocity);
+   m_controllerCenter.setSetpoint(-rpm, ControlType.kVelocity);
     m_controllerRight.setSetpoint(rpm, ControlType.kVelocity);
 }
-  public void stop() {
-  // motorLeft.stopMotor();
-  // motorCenter.stopMotor();
-  // motorRight.stopMotor();
+public double getRPM(){ 
+return motorLeft.getEncoder().getVelocity();
+}
 
+  public void stop() {
+   motorLeft.stopMotor();
+   motorCenter.stopMotor();
+   motorRight.stopMotor();
+   
+ /* 
   m_controllerLeft.setSetpoint(0,ControlType.kVelocity);
   m_controllerCenter.setSetpoint(0,ControlType.kVelocity);
   m_controllerRight.setSetpoint(0,ControlType.kVelocity);
-  
+   */
   }
 
 }

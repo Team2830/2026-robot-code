@@ -7,6 +7,7 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.SwerveSubsystem;
+import swervelib.SwerveInputStream;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,6 +33,14 @@ public class RobotContainer {
 
     private final CommandXboxController m_opController =
       new CommandXboxController(OperatorConstants.kOpControllerPort);
+
+  SwerveInputStream driveAngularVelocity_test = SwerveInputStream.of(drive.getSwerveDrive(),
+                                                                () -> m_driverController.getLeftY() * -1,
+                                                                () -> m_driverController.getLeftX() * -1)
+                                                            .withControllerRotationAxis(() -> m_driverController.getRightX()*-1)
+                                                            .deadband(0.1)
+                                                            .scaleTranslation(0.8)
+                                                            .allianceRelativeControl(true);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -59,11 +68,14 @@ public class RobotContainer {
     m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot());//Driver
 
 
-    drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
+    Command driveFieldOrientedAnglularVelocity = drive.driveFieldOriented(driveAngularVelocity_test);
+      drive.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+    //drive.setDefaultCommand(drive.conorsDriveFieldOriented(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightY, m_driverController::getRightX));
+   // drive.setDefaultCommand(drive.teleopDriveAngularVelocity(m_driverController::getLeftY, m_driverController::getLeftX, m_driverController::getRightX));
     //CommandScheduler.getInstance().setDefaultCommand(Kicker.getInstance(), Commands.run( () -> Kicker.getInstance().outake()));
     
     m_driverController.rightBumper().whileTrue(new Shooting());//Driver
-    m_driverController.rightBumper().whileTrue(new Outake());//Driver
+    m_driverController.rightTrigger().whileTrue(new Outake());//Driver
     m_driverController.leftBumper().onTrue(Commands.runOnce(() -> drive.resetPose()));
   /*
   m_driverController.leftBumper().whileTrue(new AbsoluteDriveAdv(
