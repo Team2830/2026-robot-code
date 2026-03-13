@@ -27,16 +27,15 @@ public class InTheTrenches extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+
+     IntakePivot.getInstance().down();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Indexer.getInstance().intake();
-    IntakeMotor.getInstance().in();
-    //IntakePivot.getInstance().down();
-    // Shooter.getInstance().stop();
-    //Kicker.getInstance().stop();
+    
     
   }
 

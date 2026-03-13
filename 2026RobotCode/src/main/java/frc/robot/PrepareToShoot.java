@@ -19,7 +19,8 @@ public class PrepareToShoot extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(
    
-    Shooter.getInstance()
+    Shooter.getInstance(),
+    IntakePivot.getInstance()
     
     );
     
@@ -29,12 +30,12 @@ public class PrepareToShoot extends Command {
   @Override
   public void initialize() {
     Shooter.getInstance().shootComplex(3500);
+    IntakePivot.getInstance().down();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-     SmartDashboard.putNumber("rpm",Shooter.getInstance().getRPM());
   }
 
   // Called once the command ends or is interrupted.

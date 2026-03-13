@@ -7,7 +7,9 @@ import frc.robot.Constants.MotorConstants;
 
 import static edu.wpi.first.units.Units.RPM;
 
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -47,42 +49,66 @@ public class Shooter extends SubsystemBase {
     kI = 4e-6;
     kD = 0; 
 
+
+
     SparkMaxConfig configLeft = new SparkMaxConfig();
     configLeft
     .inverted(false)
     .idleMode(IdleMode.kBrake);
-configLeft.absoluteEncoder
-    .positionConversionFactor(1)
-    .velocityConversionFactor(1).inverted(false);
-configLeft.closedLoop
-    .pid(kP,kI,kD).positionWrappingEnabled(true).positionWrappingInputRange(0, 1);
-    motorLeft.configure(configLeft,SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    
-    m_controllerLeft= motorLeft.getClosedLoopController();
 
-   SparkMaxConfig configCenter = new SparkMaxConfig();
+    configLeft.closedLoop.feedForward.kV(0.0006541);
+
+    motorLeft.configure(configLeft, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+
+    SparkMaxConfig configCenter = new SparkMaxConfig();
     configCenter
     .inverted(false)
     .idleMode(IdleMode.kBrake);
-configCenter.absoluteEncoder
-    .positionConversionFactor(1)
-    .velocityConversionFactor(1).inverted(false);
-configCenter.closedLoop
-    .pid(kP,kI,kD).positionWrappingEnabled(true).positionWrappingInputRange(0, 1);
-    motorCenter.configure(configCenter,SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    
-    m_controllerCenter= motorCenter.getClosedLoopController();
+
+    configCenter.closedLoop.feedForward.kV(0.0006541);
+
+    motorCenter.configure(configCenter, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig configRight = new SparkMaxConfig();
     configRight
     .inverted(false)
     .idleMode(IdleMode.kBrake);
-configRight.absoluteEncoder
-    .positionConversionFactor(1)
-    .velocityConversionFactor(1).inverted(false);
-configRight.closedLoop
-    .pid(kP,kI,kD).positionWrappingEnabled(true).positionWrappingInputRange(0, 1);
-    motorRight.configure(configCenter,SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+
+    configRight.closedLoop.feedForward.kV(0.0006541);
+
+    motorRight.configure(configRight, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+// configLeft.absoluteEncoder
+//     .positionConversionFactor(1)
+//     .velocityConversionFactor(1).inverted(false);
+// configLeft.closedLoop
+//     .pid(kP,kI,kD).positionWrappingEnabled(true).positionWrappingInputRange(0, 1);
+//     motorLeft.configure(configLeft,SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    
+    m_controllerLeft= motorLeft.getClosedLoopController();
+
+//    SparkMaxConfig configCenter = new SparkMaxConfig();
+//     configCenter
+//     .inverted(false)
+//     .idleMode(IdleMode.kBrake);
+// configCenter.absoluteEncoder
+//     .positionConversionFactor(1)
+//     .velocityConversionFactor(1).inverted(false);
+// configCenter.closedLoop
+//     .pid(kP,kI,kD).positionWrappingEnabled(true).positionWrappingInputRange(0, 1);
+//     motorCenter.configure(configCenter,SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    
+    m_controllerCenter= motorCenter.getClosedLoopController();
+
+//     SparkMaxConfig configRight = new SparkMaxConfig();
+//     configRight
+//     .inverted(false)
+//     .idleMode(IdleMode.kBrake);
+// configRight.absoluteEncoder
+//     .positionConversionFactor(1)
+//     .velocityConversionFactor(1).inverted(false);
+// configRight.closedLoop
+//     .pid(kP,kI,kD).positionWrappingEnabled(true).positionWrappingInputRange(0, 1);
+//     motorRight.configure(configCenter,SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
     
     m_controllerRight= motorRight.getClosedLoopController();
 
