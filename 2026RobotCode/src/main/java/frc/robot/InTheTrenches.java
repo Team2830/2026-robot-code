@@ -18,7 +18,6 @@ public class InTheTrenches extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Indexer.getInstance(),
     IntakeMotor.getInstance(),
-    Shooter.getInstance(),
     IntakePivot.getInstance(),
     Kicker.getInstance()
     );

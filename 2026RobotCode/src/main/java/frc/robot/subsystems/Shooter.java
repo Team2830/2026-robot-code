@@ -19,7 +19,8 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.SparkBase;
 
-
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -29,7 +30,7 @@ public class Shooter extends SubsystemBase {
     private SparkClosedLoopController m_controllerLeft;
     private SparkClosedLoopController m_controllerCenter;
     private SparkClosedLoopController m_controllerRight;
-  public double kP, kI, kD;
+  public double kP, kI, kD, kV;
 
 
    private static Shooter instance = null;
@@ -46,37 +47,40 @@ public class Shooter extends SubsystemBase {
   private Shooter() 
   {
     kP = 5e-5; 
-    kI = 4e-6;
+    kI = 0;//was 4e-6;
     kD = 0; 
-
+    kV = 0.0002;// was 0.0006541
 
 
     SparkMaxConfig configLeft = new SparkMaxConfig();
     configLeft
     .inverted(false)
-    .idleMode(IdleMode.kBrake);
+    .idleMode(IdleMode.kCoast);
 
-    configLeft.closedLoop.feedForward.kV(0.0006541);
+    configLeft.closedLoop.feedForward.kV(kV);
+    configLeft.closedLoop.p(kP).i(kI).d(kD);
 
-    motorLeft.configure(configLeft, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+    motorLeft.configure(configLeft, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig configCenter = new SparkMaxConfig();
     configCenter
     .inverted(false)
-    .idleMode(IdleMode.kBrake);
+    .idleMode(IdleMode.kCoast);
 
-    configCenter.closedLoop.feedForward.kV(0.0006541);
+    configCenter.closedLoop.feedForward.kV(kV);
+    configCenter.closedLoop.p(kP).i(kI).d(kD);
 
-    motorCenter.configure(configCenter, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+    motorCenter.configure(configCenter, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     SparkMaxConfig configRight = new SparkMaxConfig();
     configRight
     .inverted(false)
-    .idleMode(IdleMode.kBrake);
+    .idleMode(IdleMode.kCoast);
 
-    configRight.closedLoop.feedForward.kV(0.0006541);
+    configRight.closedLoop.feedForward.kV(kV);
+    configRight.closedLoop.p(kP).i(kI).d(kD);
 
-    motorRight.configure(configRight, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
+    motorRight.configure(configRight, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 // configLeft.absoluteEncoder
 //     .positionConversionFactor(1)
 //     .velocityConversionFactor(1).inverted(false);
@@ -119,6 +123,8 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putData("Shooter", this);
+    SmartDashboard.putNumber("Left Shooter PV", -motorLeft.getEncoder().getVelocity());
   }
 
   public void shootSimple(double speed) {

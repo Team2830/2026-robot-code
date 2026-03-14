@@ -19,8 +19,8 @@ public class PrepareToShoot extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(
    
-    Shooter.getInstance(),
-    IntakePivot.getInstance()
+    Shooter.getInstance()
+    // IntakePivot.getInstance()
     
     );
     
@@ -29,13 +29,14 @@ public class PrepareToShoot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Shooter.getInstance().shootComplex(3500);
-    IntakePivot.getInstance().down();
+    
+    // IntakePivot.getInstance().down();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Shooter.getInstance().shootComplex(5500);
   }
 
   // Called once the command ends or is interrupted.

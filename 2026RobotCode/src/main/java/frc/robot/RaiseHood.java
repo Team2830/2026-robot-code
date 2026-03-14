@@ -21,7 +21,7 @@ public class RaiseHood extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-   HoodServo.getInstance().setPosition(HoodServo.getInstance().getPosition()+1);
+   HoodServo.getInstance().setPosition(50);
     
   }
 

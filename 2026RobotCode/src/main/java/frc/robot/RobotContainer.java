@@ -8,6 +8,9 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,7 +38,24 @@ public class RobotContainer {
     .scaleTranslation(0.8)
     .allianceRelativeControl(true);
 
+    SwerveInputStream driveMiddleAutoVelocity = SwerveInputStream.of(
+    drive.getSwerveDrive(),
+    () -> 0,
+    () -> -0.1)
+    .withControllerRotationAxis(() -> 0)
+    .deadband(0)
+    .scaleTranslation(0.8)
+    .allianceRelativeControl(true);
+
   public RobotContainer() {
+
+    Command driveFieldOrientedMiddleAutoVelocity = drive.driveFieldOriented(driveMiddleAutoVelocity);
+    NamedCommands.registerCommand("MiddleAuto", driveFieldOrientedMiddleAutoVelocity);
+    NamedCommands.registerCommand("Shooting", new Shooting());
+    NamedCommands.registerCommand("PrepareToShoot", new PrepareToShoot());
+    NamedCommands.registerCommand("Intaking", new Intaking());
+    NamedCommands.registerCommand("DefensiveMode", new DefensiveMode());
+
     configureBindings();
   }
 
@@ -53,7 +73,7 @@ public class RobotContainer {
     m_opController.y().toggleOnTrue(new RaiseIntake().andThen(new WaitCommand(0.5)).andThen(new DefensiveMode()));
 
     // Spin Shooter Motor -> Press left trigger once to turn on. Press again to turn off
-    m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot());
+    m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot().withName("PrepareToShoot"));
 
     m_opController.povUp().toggleOnTrue(new RaiseHood());
 
@@ -65,7 +85,7 @@ public class RobotContainer {
     drive.setDefaultCommand(driveFieldOrientedAnglularVelocity);
     
     // Shoot the Balls/"Fuel" -> Press and holy right bumper "RB"
-    m_driverController.rightBumper().whileTrue(new Shooting());
+    m_driverController.rightBumper().whileTrue(new Shooting().withName("Shooting"));
 
     // Outake Balls/"Fuel" -> Press and hold right trigger "RT"
     m_driverController.rightTrigger().whileTrue(new Outake());

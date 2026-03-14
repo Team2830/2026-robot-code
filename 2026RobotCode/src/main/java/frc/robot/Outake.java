@@ -18,7 +18,6 @@ public class Outake extends Command {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Indexer.getInstance(),
     IntakeMotor.getInstance(),
-    Shooter.getInstance(),
     IntakePivot.getInstance(),
     Kicker.getInstance()
     );
@@ -31,7 +30,6 @@ public class Outake extends Command {
     Indexer.getInstance().outake();
     IntakeMotor.getInstance().out();
     //IntakePivot.getInstance().down();
-    Shooter.getInstance().stop();
     Kicker.getInstance().outake();
     
   }
