@@ -46,7 +46,7 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private Shooter() 
   {
-    kP = 5e-5; 
+    kP = 5e-4; 
     kI = 0;//was 4e-6;
     kD = 0; 
     kV = 0.0002;// was 0.0006541
