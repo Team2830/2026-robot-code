@@ -52,7 +52,7 @@ public class RobotContainer {
     Command driveFieldOrientedMiddleAutoVelocity = drive.driveFieldOriented(driveMiddleAutoVelocity);
     NamedCommands.registerCommand("MiddleAuto", driveFieldOrientedMiddleAutoVelocity);
     NamedCommands.registerCommand("Shooting", new Shooting());
-    NamedCommands.registerCommand("PrepareToShoot", new PrepareToShoot());
+    NamedCommands.registerCommand("PrepareToShoot", new PrepareToShoot(5500, 50));
     NamedCommands.registerCommand("Intaking", new Intaking());
     NamedCommands.registerCommand("DefensiveMode", new DefensiveMode());
 
@@ -73,7 +73,8 @@ public class RobotContainer {
     m_opController.y().toggleOnTrue(new RaiseIntake().andThen(new WaitCommand(0.5)).andThen(new DefensiveMode()));
 
     // Spin Shooter Motor -> Press left trigger once to turn on. Press again to turn off
-    m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot().withName("PrepareToShoot"));
+    m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot(5500, 50).withName("PrepareToShootLong"));
+    m_opController.rightTrigger().toggleOnTrue( new PrepareToShoot(4500, 50).withName("PrepareToShootLong"));
 
     m_opController.povUp().toggleOnTrue(new RaiseHood());
 

@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.HoodServo;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeMotor;
 import frc.robot.subsystems.IntakePivot;
@@ -19,7 +20,8 @@ public class InTheTrenches extends Command {
     addRequirements(Indexer.getInstance(),
     IntakeMotor.getInstance(),
     IntakePivot.getInstance(),
-    Kicker.getInstance()
+    Kicker.getInstance(),
+    HoodServo.getInstance()
     );
     
   }
@@ -29,6 +31,7 @@ public class InTheTrenches extends Command {
   public void initialize() {
 
      IntakePivot.getInstance().down();
+     HoodServo.getInstance().setPosition(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

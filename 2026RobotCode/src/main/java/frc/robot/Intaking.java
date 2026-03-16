@@ -30,7 +30,7 @@ public class Intaking extends Command {
   public void initialize() {
     Indexer.getInstance().intake();
     IntakeMotor.getInstance().in();
-    IntakePivot.getInstance().down();
+    // IntakePivot.getInstance().down();
   
     
   }

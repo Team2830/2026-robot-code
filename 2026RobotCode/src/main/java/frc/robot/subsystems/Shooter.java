@@ -46,9 +46,9 @@ public class Shooter extends SubsystemBase {
   /** Creates a new Shooter. */
   private Shooter() 
   {
-    kP = 5e-4; 
+    kP = 0.00075; // was 0.001
     kI = 0;//was 4e-6;
-    kD = 0; 
+    kD = 0.001; 
     kV = 0.0002;// was 0.0006541
 
 
@@ -57,8 +57,7 @@ public class Shooter extends SubsystemBase {
     .inverted(false)
     .idleMode(IdleMode.kCoast);
 
-    configLeft.closedLoop.feedForward.kV(kV);
-    configLeft.closedLoop.p(kP).i(kI).d(kD);
+    configLeft.closedLoop.pid(kP, kI, kD).outputRange(-8500, 8500).feedForward.kV(kV);
 
     motorLeft.configure(configLeft, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -67,8 +66,8 @@ public class Shooter extends SubsystemBase {
     .inverted(false)
     .idleMode(IdleMode.kCoast);
 
-    configCenter.closedLoop.feedForward.kV(kV);
-    configCenter.closedLoop.p(kP).i(kI).d(kD);
+    configCenter.closedLoop.pid(kP, kI, kD).outputRange(-8500, 8500).feedForward.kV(kV);
+
 
     motorCenter.configure(configCenter, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -77,8 +76,8 @@ public class Shooter extends SubsystemBase {
     .inverted(false)
     .idleMode(IdleMode.kCoast);
 
-    configRight.closedLoop.feedForward.kV(kV);
-    configRight.closedLoop.p(kP).i(kI).d(kD);
+    configRight.closedLoop.pid(kP, kI, kD).outputRange(-8500, 8500).feedForward.kV(kV);
+
 
     motorRight.configure(configRight, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 // configLeft.absoluteEncoder
@@ -135,8 +134,8 @@ public class Shooter extends SubsystemBase {
   }
 public void shootComplex(double rpm) {
   m_controllerLeft.setSetpoint(-rpm, ControlType.kVelocity);
-   m_controllerCenter.setSetpoint(-rpm, ControlType.kVelocity);
-    m_controllerRight.setSetpoint(rpm, ControlType.kVelocity);
+  m_controllerCenter.setSetpoint(-rpm, ControlType.kVelocity);
+  m_controllerRight.setSetpoint(rpm, ControlType.kVelocity);
 }
 public double getRPM(){ 
 return motorLeft.getEncoder().getVelocity();

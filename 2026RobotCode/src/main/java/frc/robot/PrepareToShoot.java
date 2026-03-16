@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.HoodServo;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.IntakeMotor;
 import frc.robot.subsystems.IntakePivot;
@@ -14,12 +15,16 @@ import frc.robot.subsystems.Shooter;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class PrepareToShoot extends Command {
+  double speed, angle;
   /** Creates a new InTheTrenches. */
-  public PrepareToShoot() {
+  public PrepareToShoot(double speed,double angle) {
+    this.speed=speed;
+    this.angle=angle;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(
    
-    Shooter.getInstance()
+    Shooter.getInstance(),
+    HoodServo.getInstance()
     // IntakePivot.getInstance()
     
     );
@@ -36,7 +41,8 @@ public class PrepareToShoot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    Shooter.getInstance().shootComplex(5500);
+    Shooter.getInstance().shootComplex(speed);
+    HoodServo.getInstance().setPosition(angle);
   }
 
   // Called once the command ends or is interrupted.
