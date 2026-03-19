@@ -9,10 +9,13 @@ import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -22,6 +25,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class RobotContainer {
   SwerveSubsystem drive = new SwerveSubsystem();
+
+  private final SendableChooser<Command> autoChooser;
   
   private final CommandXboxController m_driverController =
     new CommandXboxController(OperatorConstants.kDriverControllerPort);
@@ -48,13 +53,15 @@ public class RobotContainer {
     .allianceRelativeControl(true);
 
   public RobotContainer() {
-
-    Command driveFieldOrientedMiddleAutoVelocity = drive.driveFieldOriented(driveMiddleAutoVelocity);
-    NamedCommands.registerCommand("MiddleAuto", driveFieldOrientedMiddleAutoVelocity);
     NamedCommands.registerCommand("Shooting", new Shooting());
-    NamedCommands.registerCommand("PrepareToShoot", new PrepareToShoot(5500, 50));
+    NamedCommands.registerCommand("PrepareToShoot", new PrepareToShoot(3500, 50, false));
     NamedCommands.registerCommand("Intaking", new Intaking());
     NamedCommands.registerCommand("DefensiveMode", new DefensiveMode());
+    NamedCommands.registerCommand("LowerIntake", new LowerIntake());
+    NamedCommands.registerCommand("LowerHood", new LowerHood());
+  
+    autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", autoChooser);
 
     configureBindings();
   }
@@ -73,8 +80,8 @@ public class RobotContainer {
     m_opController.y().toggleOnTrue(new RaiseIntake().andThen(new WaitCommand(0.5)).andThen(new DefensiveMode()));
 
     // Spin Shooter Motor -> Press left trigger once to turn on. Press again to turn off
-    m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot(5500, 50).withName("PrepareToShootLong"));
-    m_opController.rightTrigger().toggleOnTrue( new PrepareToShoot(4500, 50).withName("PrepareToShootLong"));
+    m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot(5500, 50, true).withName("PrepareToShootLong"));
+    m_opController.rightTrigger().toggleOnTrue( new PrepareToShoot(3500, 50,true).withName("PrepareToShootLong"));
 
     m_opController.povUp().toggleOnTrue(new RaiseHood());
 
@@ -126,6 +133,6 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return null;
+    return autoChooser.getSelected();
   }
 }

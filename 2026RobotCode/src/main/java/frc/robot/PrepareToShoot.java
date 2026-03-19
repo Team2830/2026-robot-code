@@ -16,10 +16,12 @@ import frc.robot.subsystems.Shooter;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class PrepareToShoot extends Command {
   double speed, angle;
+  boolean stopAtEnd;
   /** Creates a new InTheTrenches. */
-  public PrepareToShoot(double speed,double angle) {
+  public PrepareToShoot(double speed,double angle, boolean stopAtEnd) {
     this.speed=speed;
     this.angle=angle;
+    this.stopAtEnd = stopAtEnd;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(
    
@@ -48,7 +50,10 @@ public class PrepareToShoot extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Shooter.getInstance().stop();
+    if(stopAtEnd)
+    {
+      Shooter.getInstance().stop();
+    }
   }
 
   // Returns true when the command should end.

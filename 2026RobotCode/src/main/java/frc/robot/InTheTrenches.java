@@ -30,7 +30,7 @@ public class InTheTrenches extends Command {
   @Override
   public void initialize() {
 
-     IntakePivot.getInstance().down();
+    //  IntakePivot.getInstance().down();
      HoodServo.getInstance().setPosition(0);
   }
 

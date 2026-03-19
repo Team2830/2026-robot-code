@@ -48,7 +48,11 @@ public class IntakePivot extends SubsystemBase {
   }
 
   public void down() {
-    motor.set(0.10);
+    motor.set(0.40);
+  }
+
+  public void stop() {
+    motor.set(0);
   }
 
 }
