@@ -6,6 +6,7 @@ package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Kicker;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.SwerveSubsystem;
 import swervelib.SwerveInputStream;
 
@@ -55,6 +56,7 @@ public class RobotContainer {
   public RobotContainer() {
     NamedCommands.registerCommand("Shooting", new Shooting());
     NamedCommands.registerCommand("PrepareToShoot", new PrepareToShoot(3500, 50, false));
+    NamedCommands.registerCommand("PrepareToShootFar", new PrepareToShoot(5500,50,false));
     NamedCommands.registerCommand("Intaking", new Intaking());
     NamedCommands.registerCommand("DefensiveMode", new DefensiveMode());
     NamedCommands.registerCommand("LowerIntake", new LowerIntake());
@@ -82,6 +84,8 @@ public class RobotContainer {
     // Spin Shooter Motor -> Press left trigger once to turn on. Press again to turn off
     m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot(5500, 50, true).withName("PrepareToShootLong"));
     m_opController.rightTrigger().toggleOnTrue( new PrepareToShoot(3500, 50,true).withName("PrepareToShootLong"));
+    //   Shooter.getInstance().setDefaultCommand(new AntiJam(2000, 50, false));
+
 
     m_opController.povUp().toggleOnTrue(new RaiseHood());
 

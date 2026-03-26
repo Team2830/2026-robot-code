@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 import frc.robot.Constants.MotorConstants;
+
+import com.revrobotics.PersistMode;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -32,6 +35,13 @@ public class Indexer extends SubsystemBase {
 
   /** Creates a new Indexer. */
   private Indexer() {
+    SparkMaxConfig config = new SparkMaxConfig();
+    config
+        .smartCurrentLimit(30)
+        .idleMode(IdleMode.kBrake);
+
+    // Persist parameters to retain configuration in the event of a power cycle
+    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
   
 

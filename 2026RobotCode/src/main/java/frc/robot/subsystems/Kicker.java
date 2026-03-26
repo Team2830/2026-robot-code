@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 import frc.robot.Constants.MotorConstants;
+
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -35,6 +38,13 @@ public class Kicker extends SubsystemBase {
   
   /** Creates a new Indexer. */
   public Kicker() {
+SparkMaxConfig config = new SparkMaxConfig();
+    config
+        .smartCurrentLimit(30)
+        .idleMode(IdleMode.kBrake);
+
+    // Persist parameters to retain configuration in the event of a power cycle
+    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
   }
   
 
@@ -44,10 +54,10 @@ public class Kicker extends SubsystemBase {
   }
 
   public void intake () {
-  motor.set(-1);  
+  //motor.set(-1);  
   }
 public void outake() {
-  motor.set(1);  
+  //motor.set(1);  
   }
 public void stop() {
   motor.set(0);

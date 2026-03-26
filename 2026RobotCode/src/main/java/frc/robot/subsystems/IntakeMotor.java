@@ -5,6 +5,10 @@
 package frc.robot.subsystems;
 import frc.robot.Constants.MotorConstants;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -23,7 +27,15 @@ public class IntakeMotor extends SubsystemBase {
 
   
   /** Creates a new IntakeMotor. */
-  private IntakeMotor() {}
+  private IntakeMotor() {
+    SparkMaxConfig config = new SparkMaxConfig();
+    config
+        .smartCurrentLimit(30)
+        .idleMode(IdleMode.kBrake);
+
+    // Persist parameters to retain configuration in the event of a power cycle
+    motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  }
 
   @Override
   public void periodic() {
