@@ -31,7 +31,9 @@ public class IntakeMotor extends SubsystemBase {
     SparkMaxConfig config = new SparkMaxConfig();
     config
         .smartCurrentLimit(30)
-        .idleMode(IdleMode.kBrake);
+        .idleMode(IdleMode.kBrake)
+        .inverted(true);
+    
 
     // Persist parameters to retain configuration in the event of a power cycle
     motor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
