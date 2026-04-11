@@ -93,6 +93,10 @@ public class RobotContainer {
 
     m_opController.povDown().toggleOnTrue(new LowerHood());
 
+    m_opController.rightBumper().onTrue(new BlockerIn());
+    m_opController.leftBumper().onTrue (new BlockerOut());
+    m_opController.leftTrigger().whileTrue(new BlockerManual(m_opController::getLeftY));
+
     /* Driver Controller Mapping */
     // Default Drive Mode is Field Oriented
     Command driveFieldOrientedAnglularVelocity = drive.driveFieldOriented(driveAngularVelocity);
