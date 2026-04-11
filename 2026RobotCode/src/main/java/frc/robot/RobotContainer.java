@@ -75,7 +75,7 @@ public class RobotContainer {
 
     // Lower Intake -> Press and hold b
     //    Note: Use when you are going under the trench
-    m_opController.b().whileTrue(new InTheTrenches());
+    // m_opController.b().whileTrue(new InTheTrenches());
 
     // Raise Intake & Stop All Intaking/Indexing/Shooting Motors -> Press and hold y
     //    Note: Use when defending
@@ -95,7 +95,7 @@ public class RobotContainer {
 
     m_opController.rightBumper().onTrue(new BlockerIn());
     m_opController.leftBumper().onTrue (new BlockerOut());
-    m_opController.leftTrigger().whileTrue(new BlockerManual(m_opController::getLeftY));
+    m_opController.b().whileTrue(new BlockerManual(m_opController::getLeftY));
 
     /* Driver Controller Mapping */
     // Default Drive Mode is Field Oriented
