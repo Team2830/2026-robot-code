@@ -46,6 +46,7 @@ public class Intaking extends Command {
   public void end(boolean interrupted) {
     IntakeMotor.getInstance().stop();
     Indexer.getInstance().stop();
+    Kicker.getInstance().stop();
   }
 
   // Returns true when the command should end.

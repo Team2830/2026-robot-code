@@ -86,7 +86,9 @@ public class RobotContainer {
     m_opController.rightTrigger().toggleOnTrue( new PrepareToShoot(3500, 50,true).withName("PrepareToShootLong"));
     //   Shooter.getInstance().setDefaultCommand(new AntiJam(2000, 50, false));
 
-
+    m_opController.x().whileTrue(new UnJam());
+    //Runs shooter full speed to unjam fuel
+    
     m_opController.povUp().toggleOnTrue(new RaiseHood());
 
     m_opController.povDown().toggleOnTrue(new LowerHood());

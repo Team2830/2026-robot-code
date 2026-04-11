@@ -19,8 +19,7 @@ public class Outake extends Command {
     addRequirements(Indexer.getInstance(),
     IntakeMotor.getInstance(),
     IntakePivot.getInstance(),
-    Kicker.getInstance(),
-    Shooter.getInstance()
+    Kicker.getInstance()
     );
     
   }
@@ -32,7 +31,6 @@ public class Outake extends Command {
     IntakeMotor.getInstance().out();
     //IntakePivot.getInstance().down();
     Kicker.getInstance().outake();
-    Shooter.getInstance().shootComplex(-1300);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -47,7 +45,6 @@ public class Outake extends Command {
     IntakeMotor.getInstance().stop();
     Indexer.getInstance().stop();
     Kicker.getInstance().stop();
-    Shooter.getInstance().stop();
   }
 
   // Returns true when the command should end.

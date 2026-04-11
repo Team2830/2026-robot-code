@@ -95,7 +95,7 @@ public class Shooter extends SubsystemBase {
   public void shootSimple(double speed) {
     motorLeft.set(-speed);
     motorCenter.set(-speed);
-    motorRight.set(-speed);
+    motorRight.set(speed);
 
   }
 
