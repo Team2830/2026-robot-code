@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.DutyCycle;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Blocker extends SubsystemBase {
-  private final TalonFX motor= new TalonFX(1, new CANBus("Canivore"));
+  private final TalonFX motor= new TalonFX(1);
   private final DutyCycleOut dutycylerequest=new DutyCycleOut(0);
   private final PositionVoltage PositionRequest=new PositionVoltage(0).withSlot(0);
 

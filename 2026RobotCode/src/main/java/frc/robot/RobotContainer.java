@@ -84,6 +84,7 @@ public class RobotContainer {
     // Spin Shooter Motor -> Press left trigger once to turn on. Press again to turn off
     m_opController.leftTrigger().toggleOnTrue( new PrepareToShoot(5500, 50, true).withName("PrepareToShootLong"));
     m_opController.rightTrigger().toggleOnTrue( new PrepareToShoot(3500, 50,true).withName("PrepareToShootLong"));
+    m_opController.start().toggleOnTrue( new PrepareToShoot(8500, 150,true).withName("PrepareToShootLong"));
     //   Shooter.getInstance().setDefaultCommand(new AntiJam(2000, 50, false));
 
     m_opController.x().whileTrue(new UnJam());
